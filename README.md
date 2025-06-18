@@ -31,3 +31,21 @@ Neural networks consistently outperformed logistic regression across all metrics
 - **Dropout** (0.2 in Instance 2, 0.3 in Instance 3, 0.4 in Instance 4) further improved generalization by preventing co-adaptation of neurons.
 - **Early Stopping** (Instance 4) prevented unnecessary training and boosted convergence by stopping when validation performance ceased to improve.
 - **Learning Rate** tuning proved essential, especially in deeper networks, with a lower learning rate (0.0001 in Instance 4) leading to more stable and optimal convergence.
+
+## 🎥 Video Presentation
+
+🎬 [https://drive.google.com/file/d/16mox6Mofhu4elM7JSdN8cbwakbW37xUl/view?usp=sharing](url)
+
+This 5-minute video explains:
+- Problem statement and dataset
+- Explanation of each model
+- Justification of hyperparameter choices
+- Table presentation with results and metrics:
+  - Optimizer
+  - Regularization
+  - Dropout
+  - Learning Rate
+  - Early stopping usage
+  - Accuracy, Loss, F1, Precision, Recall (and ROC-AUC if applicable)
+- Discussion of comparisons across models
+- Reflections on what worked best and why
