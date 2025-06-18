@@ -7,16 +7,16 @@ This project aims to explore the effectiveness of optimization techniques in neu
 The dataset includes daily wholesale gasoline and diesel prices in Toronto. After preprocessing, we created a classification task by categorizing the average price into three classes: low, medium, and high. This dataset is not generic and represents a real-world economic indicator, providing rich features (temporal, price gaps, etc.) for modeling.
 
 ## 🔢 Training Results Comparison Table
+Below is a detailed summary of five different training instances used to evaluate the impact of various optimization techniques on model performance:
 
-| Instance              | Optimizer   | Regularizer | Dropout | LR      | Early Stopping | Layers (Hidden) | Accuracy | Precision | Recall | F1-Score | Loss Curve |
-| :-------------------- | :---------- | :---------- | :------ | :------ | :------------- | :-------------- | :------- | :-------- | :----- | :------- | :--------- |
-| **1 (Simple NN)**     | Default     | None        | None    | -       | No             | 3               | 85.6%    | 85.1%     | 84.7%  | 84.9%    | Curved     |
-| **2 (Optimized NN)**  | Adam        | L2(0.001)   | 0.2     | 0.001   | No             | 4               | 87.3%    | 86.9%     | 86.7%  | 86.8%    | Smoother   |
-| **3 (Optimized NN)**  | RMSprop     | L2(0.001)   | 0.3     | 0.0005  | No             | 4               | 88.0%    | 87.5%     | 87.3%  | 87.4%    | Smooth     |
-| **4 (Optimized NN)**  | Adam        | L2(0.01)    | 0.4     | 0.0001  | Yes            | 4               | 89.1%    | 88.6%     | 88.4%  | 88.5%    | Optimal    |
-| **5 (LogReg)**        | -           | L2(C=1.0)   | -       | -       | -              | -               | 83.2%    | 82.7%     | 82.0%  | 82.3%    | -          |
+| Instance     | Optimizer | Regularizer | Dropout | LR     | Early Stopping | Layers | Accuracy | Precision | Recall | F1-Score | Loss Curve |
+|--------------|-----------|-------------|---------|--------|----------------|--------|----------|-----------|--------|----------|-------------|
+| 1            | Default   | None        | None    | -      | No             | 3      | 60.59%   | -         | -      | 61.02%   | Curved     |
+| 2            | Adam      | L2(0.001)   | 0.2     | 0.001  | No             | 4      | 63.56%   | -         | -      | 63.91%   | Smoother   |
+| 3            | RMSprop   | L2(0.001)   | 0.3     | 0.0005 | No             | 4      | 61.86%   | -         | -      | 62.12%   | Smooth     |
+| 4            | Adam      | L2(0.01)    | 0.4     | 0.0001 | Yes            | 4      | -        | -         | -      | -        | Pending    |
+| 5 (LogReg)   | -         | L2(C=1.0)   | -       | -      | -              | -      | 83.2%    | 82.7%     | 82.0%  | 82.3%    | -          |
 
-*Note: Actual values taken from validation set performance metrics.*
 
 ## 🤝 Summary of Findings
 
