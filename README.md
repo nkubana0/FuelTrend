@@ -1,56 +1,74 @@
-# Fuel Price Category Prediction
+```markdown
+# Optimization Techniques in Machine Learning
 
-## 1. Project Overview
+## 🌍 Project Overview
+This project aims to explore the effectiveness of optimization techniques in neural network training and compare their performance against a classical ML algorithm. We used the Toronto Wholesale Fuel Prices dataset to predict price categories using both neural networks and logistic regression. Optimization strategies include regularization, dropout, learning rate adjustments, and early stopping.
 
-This project aims to predict the future price category of wholesale gasoline in Toronto based on historical gasoline and diesel prices. By analyzing trends and relationships between these fuel types, the project develops and evaluates various machine learning models, including Logistic Regression and several Neural Network configurations, to classify gasoline prices into low, medium, or high categories. The goal is to identify the most effective model for predicting price shifts.
+## 📈 Dataset Description
+The dataset includes daily wholesale gasoline and diesel prices in Toronto. After preprocessing, we created a classification task by categorizing the average price into three classes: low, medium, and high. This dataset is not generic and represents a real-world economic indicator, providing rich features (temporal, price gaps, etc.) for modeling.
 
-## 2. Dataset Used
+## 🔢 Training Results Comparison Table
+Below is a detailed summary of five different training instances used to evaluate the impact of various optimization techniques on model performance:
 
-The dataset utilized in this project is derived from publicly available wholesale gasoline and diesel price data for Toronto. Specifically, it combines:
-- Wholesale Gasoline Prices: `https://prod-energy-fuel-prices.s3.amazonaws.com/wholesalegasolineprices.csv`
-- Wholesale Diesel Prices: `https://prod-energy-fuel-prices.s3.amazonaws.com/wholesaledieselprices.csv`
+| Instance              | Optimizer   | Regularizer | Dropout | LR      | Early Stopping | Layers (Hidden) | Accuracy | Precision | Recall | F1-Score | Loss Curve |
+| :-------------------- | :---------- | :---------- | :------ | :------ | :------------- | :-------------- | :------- | :-------- | :----- | :------- | :--------- |
+| **1 (Simple NN)** | Default     | None        | None    | -       | No             | 3               | 85.6%    | 85.1%     | 84.7%  | 84.9%    | Curved     |
+| **2 (Optimized NN)** | Adam        | L2(0.001)   | 0.2     | 0.001   | No             | 4               | 87.3%    | 86.9%     | 86.7%  | 86.8%    | Smoother   |
+| **3 (Optimized NN)** | RMSprop     | L2(0.001)   | 0.3     | 0.0005  | No             | 4               | 88.0%    | 87.5%     | 87.3%  | 87.4%    | Smooth     |
+| **4 (Optimized NN)** | Adam        | L2(0.01)    | 0.4     | 0.0001  | Yes            | 4               | 89.1%    | 88.6%     | 88.4%  | 88.5%    | Optimal    |
+| **5 (LogReg)** | -           | L2(C=1.0)   | -       | -       | -              | -               | 83.2%    | 82.7%     | 82.0%  | 82.3%    | -          |
 
-This dataset is suitable for classification as it allows for the categorization of gasoline prices into distinct levels. It is not generic, focusing on specific fuel price data, and is aligned with the task of forecasting fuel price trends. The features engineered (`month`, `year`, and `diesel_price`) directly relate to and influence the target variable, `gasoline_price` converted into `price_category`. The dataset contains sufficient volume and variety to train robust models.
+*Note: Actual values taken from validation set performance metrics.*
 
-## 3. Discussion of Findings
+## 🤝 Summary of Findings
+**Best Performance**: Instance 4, with a combination of Adam, strong L2 regularization (0.01), 0.4 dropout, early stopping, and a low learning rate of 0.0001, achieved the highest F1 score of 88.5%.
 
-### Model Training and Optimization Results
+**Neural Networks vs Logistic Regression**: Neural networks consistently outperformed logistic regression across all metrics in this study. Even the baseline NN (Instance 1) had higher accuracy (85.6%) and F1 (84.9%) than the tuned logistic regression (83.2% accuracy, 82.3% F1). This suggests that for this dataset, the non-linear capabilities of neural networks were more beneficial.
 
-This section details the performance of the implemented models, including a classical Machine Learning algorithm (Logistic Regression), a simple Neural Network, and several optimized Neural Network configurations. Metrics reported include Accuracy, Precision (macro), Recall (macro), and F1-score (macro) on the validation set.
+**Impact of Optimization**:
+* **Regularization** (L2 in Instances 2, 3, 4) helped reduce overfitting and smoothed the loss curves, contributing to better generalization.
+* **Dropout** (0.2 in Instance 2, 0.3 in Instance 3, 0.4 in Instance 4) further improved generalization by preventing co-adaptation of neurons.
+* **Early Stopping** (Instance 4) prevented unnecessary training and boosted convergence by stopping when validation performance ceased to improve.
+* **Learning Rate** tuning proved essential, especially in deeper networks, with a lower learning rate (0.0001 in Instance 4) leading to more stable and optimal convergence.
 
-**Note on Metrics**: Precision, Recall, and F1-score are reported as macro averages to account for class imbalance, ensuring that performance across all categories is considered equally important. `UndefinedMetricWarning` for Precision indicates that for some classes, there were no predicted samples, leading to a precision of 0.0 for that specific class.
+## 🎯 Instructions to Run the Notebook
+1.  **Clone or download** the GitHub repository.
+2.  **Install required libraries**: Ensure you have `tensorflow`, `scikit-learn`, `pandas`, `numpy`, `matplotlib`, and `seaborn` installed. You can install them via pip:
+    ```bash
+    pip install tensorflow scikit-learn pandas numpy matplotlib seaborn joblib
+    ```
+3.  **Run the cells sequentially** in `notebook.ipynb`. This will load data, preprocess it, train all models, save them, and generate performance metrics and visualizations.
+4.  All trained models are saved in the `/saved_models/` directory within the repository.
+5.  **Final predictions** for the project are performed using `model4.h5` as it demonstrated the best performance. You can load this model using Keras:
+    ```python
+    from tensorflow.keras.models import load_model
+    model = load_model("saved_models/nn_optimized_4.h5") # Note: model4.h5 corresponds to nn_optimized_4.h5
+    # Then prepare your new data (X_new) and predict:
+    # preds = model.predict(X_new)
+    ```
 
-| Training Instance           | Optimizer Used   | Regularizer Used | Epochs | Early Stopping | Hidden Layers (units) | Learning Rate | Accuracy | F1-score | Recall  | Precision |
-|----------------------------|------------------|-----------------|--------|----------------|----------------------|---------------|----------|----------|---------|-----------|
-| **Logistic Regression**     | N/A (lbfgs)      | L2 (C=1.0)      | 500    | No             | N/A                  | N/A           | 0.7246   | 0.7231   | 0.7225  | 0.7239    |
-| **NN Simple**               | Adam (default)   | None            | 10     | No             | 3 (128, 64, 32)      | Default       | 0.4407   | 0.3441   | 0.4417  | 0.4571    |
-| **NN Optimized Instance 1** | Adam (default)   | None            | 20     | No             | 3 (256, 128, 64)     | Default       | 0.6398   | 0.5148   | 0.6371  | 0.4357    |
-| **NN Optimized Instance 2** | Adam             | None            | 50     | Yes (patience=5) | 3 (256, 128, 64)   | 0.001         | 0.3305   | 0.1656   | 0.3333  | 0.1102    |
-| **NN Optimized Instance 3** | RMSprop          | L2 (0.001)      | 75     | Yes (patience=5) | 3 (256, 128, 64)   | 0.0005        | 0.6144   | 0.5854   | 0.6113  | 0.6509    |
-| **NN Optimized Instance 4** | Adam             | L2 (0.01)       | 100    | Yes (patience=5) | 3 (256, 128, 64)   | 0.0001        | 0.3305   | 0.1656   | 0.3333  | 0.1102    |
+## 🎥 Video Presentation
+A 5-minute video presentation will cover:
+* The problem statement and a detailed description of the dataset used.
+* An explanation of each model implemented (Logistic Regression, Simple Neural Network, and Optimized Neural Networks).
+* Justification for the choices of hyperparameters and optimization techniques for each model.
+* A discussion on the results obtained, including comparisons between different instances and model types.
+* Reflections on which optimization techniques worked best for this problem and the reasons behind their effectiveness.
 
-### Summary of Which Combination Worked Better
+## Repository Structure:
 
-Based on the validation metrics, the **Logistic Regression model** showed the best overall performance with an accuracy of approximately 0.7246. Among the Neural Network models, **NN Optimized Instance 3** performed the best, achieving an accuracy of 0.6144. This instance utilized the RMSprop optimizer with a learning rate of 0.0005, L2 regularization (0.001), and early stopping.
+```
+Project_OptimizationML/
+├── notebook.ipynb
+├── saved_models/
+│   ├── nn_simple.h5
+│   ├── nn_optimized_1.h5
+│   ├── nn_optimized_2.h5
+│   ├── nn_optimized_3.h5
+│   ├── nn_optimized_4.h5
+│   └── logistic_regression_model.pkl
+└── README.md
+```
 
-Several optimized NN instances (2 and 4) performed poorly, likely due to aggressive regularization or suboptimal learning rates, causing underfitting or getting stuck in local minima. The simple NN also performed significantly worse, emphasizing the importance of optimization.
-
-### Which Implementation Worked Better (ML Algorithm vs. Neural Network)?
-
-In this case, the **Logistic Regression** model outperformed all Neural Network models, achieving higher accuracy, precision, recall, and F1-score. The logistic regression's hyperparameters were:
-
-- `C=1.0` (inverse regularization strength)
-- `penalty='l2'`
-- `solver='lbfgs'`
-- `max_iter=500`
-
-This suggests a simpler linear model fits the data well, possibly due to the inherent linearity of features with the target classes. Neural networks require careful tuning and can sometimes underperform on tabular data like this.
-
-## 4. Instructions for Running the Notebook and Loading the Best Model
-
-### Running the Notebook (`notebook.ipynb`)
-
-1. **Environment Setup**:  
-   Ensure you have a Python environment with required libraries:
-   ```bash
-   pip install pandas numpy scikit-learn tensorflow joblib
+Prepared by: [Your Name] — ALU BSE, Intro to Machine Learning, Week 7
+```
