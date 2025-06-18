@@ -9,13 +9,13 @@ The dataset includes daily wholesale gasoline and diesel prices in Toronto. Afte
 ## 🔢 Training Results Comparison Table
 Below is a detailed summary of five different training instances used to evaluate the impact of various optimization techniques on model performance:
 
-| Instance     | Optimizer | Regularizer | Dropout | LR     | Early Stopping | Layers | Accuracy | Precision | Recall | F1-Score | Loss Curve |
-|--------------|-----------|-------------|---------|--------|----------------|--------|----------|-----------|--------|----------|-------------|
-| 1            | Default   | None        | None    | -      | No             | 3      | 60.59%   | -         | -      | 61.02%   | Curved     |
-| 2            | Adam      | L2(0.001)   | 0.2     | 0.001  | No             | 4      | 63.56%   | -         | -      | 63.91%   | Smoother   |
-| 3            | RMSprop   | L2(0.001)   | 0.3     | 0.0005 | No             | 4      | 61.86%   | -         | -      | 62.12%   | Smooth     |
-| 4            | Adam      | L2(0.01)    | 0.4     | 0.0001 | Yes            | 4      | -        | -         | -      | -        | Pending    |
-| 5 (LogReg)   | -         | L2(C=1.0)   | -       | -      | -              | -      | 83.2%    | 82.7%     | 82.0%  | 82.3%    | -          |
+| Instance | Optimizer | Reg.      | Dropout | LR     | Early Stop | Accuracy | Loss   | F1 Score |
+| -------- | --------- | --------- | ------- | ------ | ---------- | -------- | ------ | -------- |
+| 1        | Default   | None      | None    | -      | No         | 60.59%   | 0.8763 | 61.02%   |
+| 2        | Adam      | L2(0.001) | 0.2     | 0.001  | No         | 63.56%   | 0.9340 | 63.91%   |
+| 3        | RMSprop   | L2(0.001) | 0.3     | 0.0005 | No         | 61.86%   | 0.9417 | 62.12%   |
+| 4        | Adam      | L2(0.01)  | 0.4     | 0.0001 | Yes        | 58.47%   | 1.4870 | 58.28%   |
+| 5        | -         | L2(C=1.0) | -       | -      | -          | 83.2%    | -      | 82.3%    |
 
 
 ## 🤝 Summary of Findings
